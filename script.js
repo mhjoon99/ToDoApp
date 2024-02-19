@@ -25,7 +25,13 @@ function createNewTodo() {
     } = createTodoElement(item)
 
     // 리스트 요소 안에 방금 생성한 아이템 요소 추가
-    list.prepend()
+    list.prepend(itemEl);
+
+    // disabled 속성 제거
+    inputEl.removeAttribute('disabled');
+
+    // input 요소에 focus
+    inputEl.focus();
 }
 
 function createTodoElement(item) {
@@ -42,7 +48,7 @@ function createTodoElement(item) {
 
     const inputEl = document.createElement('input');
     inputEl.type = 'text';
-    inputElEl.value = item.text;
+    inputEl.value = item.text;
     inputEl.setAttribute("disabled", "");
 
     const actionsEl = document.createElement('div');
@@ -56,6 +62,19 @@ function createTodoElement(item) {
     removeBtnEl.classList.add('material-icons', 'remove-btn');
     removeBtnEl.innerText = 'remove_circle';
 
+    checkboxEl.addEventListener('change', () => {
+        item.complete = checkboxEl.checked;
+
+        if(item.complete) {
+            itemEl.classList.add('complete');
+        } else {
+            itemEl.classList.remove('complete');
+        }
+    })
+
+    inputEl.addEventListener('input', () => {
+        item.text = inputEl.value;
+    })
 
     // 큰 요소에 작은 요소 넣어주기
     actionsEl.append(editBtnEl);
